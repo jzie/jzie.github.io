@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Day 1: From zero to a car that answers back | Jijo Chacko</title>
+<meta name="description" content="Session notes, day 1: setting up an Android Automotive emulator and reading and writing live vehicle speed.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏍️</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="wrap">
+<nav class="site-nav" aria-label="Site">
+  <a class="brand" href="index.html">Jijo Chacko</a>
+  <div class="nav-links">
+    <a href="index.html">Overview</a>
+    <a href="decisions.html">Decisions</a>
+    <a href="index.html#sessions" aria-current="page">Sessions</a>
+  </div>
+</nav>
+
+<header>
+  <p class="byline">Day 1, 17 September 2026</p>
+  <h1>From zero to a car that answers back</h1>
+  <p class="lede">Goal for the session: get a virtual Android Automotive car running on my Mac, then read and write vehicle data myself instead of just watching the screen.</p>
+  <dl class="facts three">
+    <div><dt>Phase</dt><dd>1 of 8: basics and the emulator</dd></div>
+    <div><dt>Tools</dt><dd>Android Studio, Android 15 automotive emulator, adb</dd></div>
+    <div class="live"><dt>Outcome</dt><dd>Read and wrote live vehicle speed</dd></div>
+  </dl>
+</header>
+
+<section>
+  <h2>What I did</h2>
+  <ol class="steps">
+    <li><span>Installed Android Studio on an Apple Silicon MacBook.</span></li>
+    <li><span>Downloaded the Android 15 automotive system image and created a virtual car.</span></li>
+    <li><span>Simulated driving: set the gear to D and raised the speed with the emulator's car controls. The instrument cluster followed.</span></li>
+    <li><span>Read the live speed straight from the VHAL using adb, Android's command-line debugging tool.</span></li>
+    <li><span>Wrote a speed into the VHAL from the terminal and watched the cluster change without touching the slider.</span></li>
+    <li><span>Decoded the property ID to see how Android labels each piece of vehicle data.</span></li>
+  </ol>
+
+  <figure>
+    <img src="day-01-emulator.jpg" width="1400" height="593" alt="Android Automotive emulator: main screen with weather and media on the left, instrument cluster with fuel, speed, RPM and gear letters on the right.">
+    <figcaption>The virtual car running on my Mac. Main screen on the left, instrument cluster on the right with speed, RPM and gear.</figcaption>
+  </figure>
+</section>
+
+<section>
+  <div class="prose">
+    <h2>How the data flowed</h2>
+    <p>The slider and my terminal commands both wrote into the VHAL. CarService passed each change to the cluster app.</p>
+  </div>
+  <div class="diagram" role="img" aria-label="Diagram. Working today: slider or terminal sends a value to the VHAL, the vehicle data store; CarService checks permissions and streams changes to the cluster app. Planned: the Yamaha R3 data port feeds a read-only bridge, which writes into the same VHAL.">
+    <svg viewBox="0 0 960 336" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path class="ah" d="M0 0 L10 5 L0 10 z"/></marker>
+        <marker id="ap" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path class="ah-plan" d="M0 0 L10 5 L0 10 z"/></marker>
+      </defs>
+      <text class="lab-live" x="24" y="30">Working today</text>
+      <rect class="bx" x="24" y="46" width="200" height="100" rx="12"/>
+      <text class="t1" x="44" y="86">Slider or terminal</text>
+      <text class="t2" x="44" y="112">Emulator controls or adb</text>
+      <rect class="bx-key" x="268" y="46" width="200" height="100" rx="12"/>
+      <text class="t1" x="288" y="86">VHAL</text>
+      <text class="t2" x="288" y="112">Vehicle data store</text>
+      <rect class="bx" x="512" y="46" width="200" height="100" rx="12"/>
+      <text class="t1" x="532" y="86">CarService</text>
+      <text class="t2" x="532" y="112">Checks permissions,</text>
+      <text class="t2" x="532" y="130">streams changes</text>
+      <rect class="bx" x="756" y="46" width="180" height="100" rx="12"/>
+      <text class="t1" x="776" y="86">Cluster app</text>
+      <text class="t2" x="776" y="112">Shows the value</text>
+      <line class="ln" x1="226" y1="96" x2="264" y2="96" marker-end="url(#a)"/>
+      <line class="ln" x1="470" y1="96" x2="508" y2="96" marker-end="url(#a)"/>
+      <line class="ln" x1="714" y1="96" x2="752" y2="96" marker-end="url(#a)"/>
+      <text class="lab-plan" x="24" y="212">Planned</text>
+      <rect class="bx-plan" x="24" y="228" width="200" height="92" rx="12"/>
+      <text class="t1" x="44" y="266">Yamaha R3</text>
+      <text class="t2" x="44" y="292">Diagnostic data port</text>
+      <rect class="bx-plan" x="268" y="228" width="200" height="92" rx="12"/>
+      <text class="t1" x="288" y="266">Read-only bridge</text>
+      <text class="t2" x="288" y="292">Microcontroller, listens only</text>
+      <line class="ln-plan" x1="226" y1="274" x2="264" y2="274" marker-end="url(#ap)"/>
+      <line class="ln-plan" x1="368" y1="226" x2="368" y2="150" marker-end="url(#ap)"/>
+      <text class="note" x="512" y="262">The bike replaces the slider.</text>
+      <text class="note" x="512" y="286">Everything from the VHAL onward stays the same.</text>
+    </svg>
+  </div>
+</section>
+
+<section>
+  <h2>Evidence</h2>
+  <div class="evidence">
+    <div>
+      <h3>Reading and writing vehicle speed</h3>
+<pre><span class="p">$</span> adb shell dumpsys \
+    android.hardware.automotive.vehicle.IVehicle/default \
+    --get PERF_VEHICLE_SPEED
+VehiclePropValue{prop: 291504647, status: AVAILABLE,
+  value: RawPropValues{floatValues: [<span class="v">39.166668</span>]}}</pre>
+      <p class="small muted">39.17 metres per second, or 141 km/h, matching the slider.</p>
+<pre><span class="p">$</span> adb shell dumpsys \
+    android.hardware.automotive.vehicle.IVehicle/default \
+    --set PERF_VEHICLE_SPEED -f <span class="v">25</span></pre>
+      <p class="small muted">The cluster jumped to 56: 25 m/s is 90 km/h, shown in mph.</p>
+    </div>
+    <div>
+      <h3>What the ID 0x11600207 means</h3>
+      <div class="tw">
+        <table>
+          <thead><tr><th>Digits</th><th>Meaning</th></tr></thead>
+          <tbody>
+            <tr><td><code>1</code></td><td>Defined by Google, a standard value</td></tr>
+            <tr><td><code>1</code></td><td>Applies to the whole vehicle</td></tr>
+            <tr><td><code>60</code></td><td>Stored as a decimal number</td></tr>
+            <tr><td><code>0207</code></td><td>Which value: vehicle speed</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="small muted" style="margin-top:12px">My own bike values will start with 2, meaning defined by me rather than Google.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>What I learned</h2>
+  <div class="learn">
+    <div><h3>Apps never touch the hardware</h3><p>Values flow through the VHAL and CarService, which enforce permissions and update rates. For my display, bike data has to enter at the VHAL, not be patched into the app.</p></div>
+    <div><h3>Store in one unit, show in another</h3><p>The VHAL holds speed in metres per second, while the cluster showed miles per hour because the emulator is set up as a US car. Data and presentation are separate concerns.</p></div>
+    <div><h3>The last writer wins</h3><p>When the slider and the terminal both sent a speed, the VHAL kept whichever came last, and the slider never noticed. On the bike, exactly one source must own each value, or the screen can show a wrong number without warning.</p></div>
+    <div><h3>IDs are a contract</h3><p>A property ID packs who defined it, what it applies to, its data type and what it is. Designing those IDs for RPM, gear and coolant temperature is one of my next deliverables.</p></div>
+  </div>
+</section>
+
+<section class="prose">
+  <h2>Decisions made today</h2>
+  <ul class="dlist">
+    <li><a href="decisions.html#d-scope">Build on Android Automotive, not a plain phone app</a></li>
+    <li><a href="decisions.html#d-version">Learn on Android 15</a></li>
+    <li><a href="decisions.html#d-image">Use the Google APIs emulator image</a></li>
+    <li><a href="decisions.html#d-display">Raspberry Pi for the display</a></li>
+    <li><a href="decisions.html#d-cadence">One focused step per session</a></li>
+    <li><a href="decisions.html#d-public">Build in public</a></li>
+  </ul>
+</section>
+
+<section class="prose">
+  <h2>Next session</h2>
+  <p>Close Phase 1 with a short write-up of the architecture in my own words, then start a first app that reads speed and gear.</p>
+</section>
+
+<nav class="pager" aria-label="Sessions">
+  <a href="index.html#sessions">All sessions</a>
+  <a href="decisions.html">Decision log</a>
+</nav>
+
+<footer>
+  <p>Last updated 17 September 2026.</p>
+</footer>
+</div>
+</body>
+</html>

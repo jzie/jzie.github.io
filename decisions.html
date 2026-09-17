@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Product decisions | Android Automotive motorcycle display | Jijo Chacko</title>
+<meta name="description" content="Every product decision in my Android Automotive motorcycle display project, with options, reasoning and trade-offs.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏍️</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="wrap">
+<nav class="site-nav" aria-label="Site">
+  <a class="brand" href="index.html">Jijo Chacko</a>
+  <div class="nav-links">
+    <a href="index.html">Overview</a>
+    <a href="decisions.html" aria-current="page">Decisions</a>
+    <a href="index.html#sessions">Sessions</a>
+  </div>
+</nav>
+
+<header>
+  <p class="byline">Android Automotive motorcycle display</p>
+  <h1>Product decisions</h1>
+  <p class="lede">Every decision I make on this project, with the options I considered, why I chose one and what I gave up. Grouped by session, newest first.</p>
+</header>
+
+<section class="day-group" style="padding-top:8px">
+  <h2>Day 1, 17 September 2026</h2>
+  <p class="muted">From the session <a href="day-01.html">From zero to a car that answers back</a>.</p>
+    <article class="record" id="d-scope">
+      <div class="record-head"><h3>Build on Android Automotive, not a plain phone app</h3><span class="status">Decided</span></div>
+      <dl>
+        <dt>Options considered</dt><dd>A regular Android app on an old phone; Android Automotive OS</dd>
+        <dt>Choice</dt><dd>Android Automotive OS</dd>
+        <dt>Why</dt><dd>Learning the platform is the goal, and a prototype running on it proves that learning.</dd>
+        <dt>Trade-off</dt><dd>A steeper learning curve and more setup than a phone app.</dd>
+      </dl>
+    </article>
+    <article class="record" id="d-version">
+      <div class="record-head"><h3>Learn on Android 15</h3><span class="status">Decided</span></div>
+      <dl>
+        <dt>Options considered</dt><dd>Android 17, the newest phone release; Android 15 automotive</dd>
+        <dt>Choice</dt><dd>Android 15</dd>
+        <dt>Why</dt><dd>It's the newest stable automotive emulator image, and most guides and examples match it.</dd>
+        <dt>Trade-off</dt><dd>Newer Android 17 features come later, with some differences to handle when I move up.</dd>
+      </dl>
+    </article>
+    <article class="record" id="d-image">
+      <div class="record-head"><h3>Use the Google APIs emulator image</h3><span class="status">Decided</span></div>
+      <dl>
+        <dt>Options considered</dt><dd>Google Play image; Google APIs image</dd>
+        <dt>Choice</dt><dd>Google APIs image</dd>
+        <dt>Why</dt><dd>It allows root access, so I can inspect vehicle data directly, and it lets me test my own driving-safe screens.</dd>
+        <dt>Trade-off</dt><dd>No Play Store inside the emulator.</dd>
+      </dl>
+    </article>
+    <article class="record" id="d-display">
+      <div class="record-head"><h3>Raspberry Pi for the display</h3><span class="status planned">Planned, to confirm in Phase 6</span></div>
+      <dl>
+        <dt>Options considered</dt><dd>An old Android phone; Raspberry Pi</dd>
+        <dt>Choice</dt><dd>Raspberry Pi</dd>
+        <dt>Why</dt><dd>Community Android Automotive builds exist for it, while old phones rarely can run it.</dd>
+        <dt>Trade-off</dt><dd>It needs its own power supply, mounting and weatherproofing.</dd>
+      </dl>
+    </article>
+    <article class="record" id="d-cadence">
+      <div class="record-head"><h3>One focused step per session</h3><span class="status">Decided</span></div>
+      <dl>
+        <dt>Options considered</dt><dd>Large sessions covering several steps; one verified step at a time</dd>
+        <dt>Choice</dt><dd>One step per session, each with a clear done check</dd>
+        <dt>Why</dt><dd>An hour a day is sustainable, and checking each step before moving on keeps problems small.</dd>
+        <dt>Trade-off</dt><dd>A longer overall timeline of roughly five to six months.</dd>
+      </dl>
+    </article>
+    <article class="record" id="d-public">
+      <div class="record-head"><h3>Build in public</h3><span class="status">Decided</span></div>
+      <dl>
+        <dt>Options considered</dt><dd>Share only the finished prototype; publish progress as I go</dd>
+        <dt>Choice</dt><dd>A public portfolio with session notes and this decision log</dd>
+        <dt>Why</dt><dd>It shows how I think and decide, not just the end result, and it keeps me accountable.</dd>
+        <dt>Trade-off</dt><dd>Mistakes and dead ends are visible too.</dd>
+      </dl>
+    </article>
+</section>
+
+<footer>
+  <p>Last updated 17 September 2026.</p>
+</footer>
+</div>
+</body>
+</html>
