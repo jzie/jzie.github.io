@@ -16,16 +16,17 @@
 <nav class="site-nav" aria-label="Site">
   <a class="brand" href="index.html">Jijo Chacko</a>
   <div class="nav-links">
-    <a href="index.html">Overview</a>
+    <a href="project.html">Project</a>
     <a href="decisions.html">Decisions</a>
-    <a href="index.html#sessions" aria-current="page">Sessions</a>
+    <a href="project.html#sessions" aria-current="page">Sessions</a>
+    <a href="index.html#contact">Contact</a>
   </div>
 </nav>
 
 <header>
   <p class="byline">Day 1, 17 September 2026</p>
   <h1>From zero to a car that answers back</h1>
-  <p class="lede">Goal for the session: get a virtual Android Automotive car running on my Mac, then read and write vehicle data myself instead of just watching the screen.</p>
+  <p class="lede">Goal for the session: get a virtual Android Automotive vehicle running on my Mac, then read and write vehicle data myself instead of just watching the screen.</p>
   <dl class="facts three">
     <div><dt>Phase</dt><dd>1 of 8: basics and the emulator</dd></div>
     <div><dt>Tools</dt><dd>Android Studio, Android 15 automotive emulator, adb</dd></div>
@@ -34,26 +35,27 @@
 </header>
 
 <section>
-  <h2>What I did</h2>
+  <h2>What I did, and why</h2>
   <ol class="steps">
-    <li><span>Installed Android Studio on an Apple Silicon MacBook.</span></li>
-    <li><span>Downloaded the Android 15 automotive system image and created a virtual car.</span></li>
-    <li><span>Simulated driving: set the gear to D and raised the speed with the emulator's car controls. The instrument cluster followed.</span></li>
-    <li><span>Read the live speed straight from the VHAL using adb, Android's command-line debugging tool.</span></li>
-    <li><span>Wrote a speed into the VHAL from the terminal and watched the cluster change without touching the slider.</span></li>
-    <li><span>Decoded the property ID to see how Android labels each piece of vehicle data.</span></li>
+    <li><span><span class="what">Installed Android Studio on an Apple Silicon MacBook.</span><span class="why">Why: It bundles the emulator, so the whole platform can be learned before buying any hardware.</span></span></li>
+    <li><span><span class="what">Downloaded the Android 15 automotive system image, Google APIs variant.</span><span class="why">Why: Android 15 is the newest stable automotive image, and the Google APIs build allows root access, which is what makes the layers below the app inspectable.</span></span></li>
+    <li><span><span class="what">Created a virtual vehicle and booted it.</span><span class="why">Why: It provides both a main screen and an instrument cluster, so I could see where vehicle values surface before writing any code.</span></span></li>
+    <li><span><span class="what">Simulated driving with the emulator's vehicle controls: gear to D, speed up.</span><span class="why">Why: To confirm the cluster reacts to vehicle data rather than being a static image, and to find where values enter the system.</span></span></li>
+    <li><span><span class="what">Read the live speed from the VHAL over adb.</span><span class="why">Why: Going straight to the vehicle data layer, beneath any app, shows what the platform actually holds and in which units.</span></span></li>
+    <li><span><span class="what">Wrote a speed into the VHAL from the terminal.</span><span class="why">Why: Writing from outside is the same direction my motorcycle's data will travel later, so it tests the path the real bridge will use.</span></span></li>
+    <li><span><span class="what">Decoded the property ID 0x11600207.</span><span class="why">Why: Each vehicle value carries an ID that encodes who defined it, what it covers and its type. My own motorcycle values will need IDs in the vendor range, so the scheme matters.</span></span></li>
   </ol>
 
   <figure>
     <img src="day-01-emulator.jpg" width="1400" height="593" alt="Android Automotive emulator: main screen with weather and media on the left, instrument cluster with fuel, speed, RPM and gear letters on the right.">
-    <figcaption>The virtual car running on my Mac. Main screen on the left, instrument cluster on the right with speed, RPM and gear.</figcaption>
+    <figcaption>The virtual vehicle running on my Mac. Main screen on the left, instrument cluster on the right with speed, RPM and gear.</figcaption>
   </figure>
 </section>
 
 <section>
   <div class="prose">
     <h2>How the data flowed</h2>
-    <p>The slider and my terminal commands both wrote into the VHAL. CarService passed each change to the cluster app.</p>
+    <p>The slider and my terminal commands both wrote into the VHAL. CarService passed each change on to the cluster app.</p>
   </div>
   <div class="diagram" role="img" aria-label="Diagram. Working today: slider or terminal sends a value to the VHAL, the vehicle data store; CarService checks permissions and streams changes to the cluster app. Planned: the Yamaha R3 data port feeds a read-only bridge, which writes into the same VHAL.">
     <svg viewBox="0 0 960 336" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -122,7 +124,7 @@ VehiclePropValue{prop: 291504647, status: AVAILABLE,
           </tbody>
         </table>
       </div>
-      <p class="small muted" style="margin-top:12px">My own bike values will start with 2, meaning defined by me rather than Google.</p>
+      <p class="small muted" style="margin-top:12px">My own motorcycle values will start with 2, meaning defined by me rather than Google.</p>
     </div>
   </div>
 </section>
@@ -130,8 +132,8 @@ VehiclePropValue{prop: 291504647, status: AVAILABLE,
 <section>
   <h2>What I learned</h2>
   <div class="learn">
-    <div><h3>Apps never touch the hardware</h3><p>Values flow through the VHAL and CarService, which enforce permissions and update rates. For my display, bike data has to enter at the VHAL, not be patched into the app.</p></div>
-    <div><h3>Store in one unit, show in another</h3><p>The VHAL holds speed in metres per second, while the cluster showed miles per hour because the emulator is set up as a US car. Data and presentation are separate concerns.</p></div>
+    <div><h3>Apps never touch the hardware</h3><p>Values flow through the VHAL and CarService, which enforce permissions and update rates. Motorcycle data has to enter at the VHAL, not be patched into the app.</p></div>
+    <div><h3>Store in one unit, show in another</h3><p>The VHAL holds speed in metres per second, while the cluster showed miles per hour because the emulator is set up as a US vehicle. Data and presentation are separate concerns.</p></div>
     <div><h3>The last writer wins</h3><p>When the slider and the terminal both sent a speed, the VHAL kept whichever came last, and the slider never noticed. On the bike, exactly one source must own each value, or the screen can show a wrong number without warning.</p></div>
     <div><h3>IDs are a contract</h3><p>A property ID packs who defined it, what it applies to, its data type and what it is. Designing those IDs for RPM, gear and coolant temperature is one of my next deliverables.</p></div>
   </div>
@@ -151,12 +153,12 @@ VehiclePropValue{prop: 291504647, status: AVAILABLE,
 
 <section class="prose">
   <h2>Next session</h2>
-  <p>Close Phase 1 with a short write-up of the architecture in my own words, then start a first app that reads speed and gear.</p>
+  <p>Build my own app and make it read vehicle data through the platform, instead of reading the vehicle layer directly from a terminal.</p>
 </section>
 
 <nav class="pager" aria-label="Sessions">
-  <a href="index.html#sessions">All sessions</a>
-  <a href="decisions.html">Decision log</a>
+  <a href="project.html#sessions">All sessions</a>
+  <a href="day-02.html">Next session: Day 2</a>
 </nav>
 
 <footer>

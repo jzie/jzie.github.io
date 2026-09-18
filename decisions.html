@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Product decisions | Android Automotive motorcycle display | Jijo Chacko</title>
-<meta name="description" content="Every product decision in my Android Automotive motorcycle display project, with options, reasoning and trade-offs.">
+<title>Product decisions | Android Automotive motorcycle cluster | Jijo Chacko</title>
+<meta name="description" content="Every product decision in my Android Automotive motorcycle cluster project, with options, reasoning and trade-offs.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏍️</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,19 +16,88 @@
 <nav class="site-nav" aria-label="Site">
   <a class="brand" href="index.html">Jijo Chacko</a>
   <div class="nav-links">
-    <a href="index.html">Overview</a>
+    <a href="project.html">Project</a>
     <a href="decisions.html" aria-current="page">Decisions</a>
-    <a href="index.html#sessions">Sessions</a>
+    <a href="project.html#sessions">Sessions</a>
+    <a href="index.html#contact">Contact</a>
   </div>
 </nav>
 
 <header>
-  <p class="byline">Android Automotive motorcycle display</p>
+  <p class="byline">Android Automotive motorcycle cluster</p>
   <h1>Product decisions</h1>
   <p class="lede">Every decision I make on this project, with the options I considered, why I chose one and what I gave up. Grouped by session, newest first.</p>
 </header>
 
-<section class="day-group" style="padding-top:8px">
+<section class="day-group">
+  <h2>Day 2, 18 September 2026</h2>
+  <p class="muted">From the session <a href="day-02.html">My own app, reading the vehicle</a>.</p>
+    <article class="record" id="d-poc">
+      <div class="record-head"><h3>Frame this as a manufacturer-style feasibility POC</h3><span class="status">Decided</span></div>
+      <dl>
+        <dt>Options considered</dt><dd>A personal HUD gadget; a feasibility study of the question a motorcycle manufacturer would actually ask</dd>
+        <dt>Choice</dt><dd>Feasibility POC: can Android Automotive run a motorcycle instrument cluster, and where does the boundary sit?</dd>
+        <dt>Why</dt><dd>The interesting question is not whether a screen can show numbers. It is whether Android can own the rider-facing cluster while a separate layer owns the legally required warning lights, which is how the industry handles the fact that Android Automotive holds no automotive safety certification.</dd>
+        <dt>Trade-off</dt><dd>A much higher bar: the POC has to speak to start-up time, the safety split and cost, not just a working screen.</dd>
+      </dl>
+    </article>
+    <article class="record" id="d-onescreen">
+      <div class="record-head"><h3>Design for a single display</h3><span class="status">Decided</span></div>
+      <dl>
+        <dt>Options considered</dt><dd>Follow the car model of a main screen plus a cluster; treat the one screen as the whole cluster</dd>
+        <dt>Choice</dt><dd>One display, one full-screen app</dd>
+        <dt>Why</dt><dd>A motorcycle has an instrument cluster and nothing else, and the Raspberry Pi will drive a single display. Android Automotive's cluster APIs assume a second screen exists, so using them here would add system-level complexity for no gain.</dd>
+        <dt>Trade-off</dt><dd>I set aside the platform's own cluster APIs for now, and will revisit them when the POC covers the safety split.</dd>
+      </dl>
+    </article>
+    <article class="record" id="d-nogloves">
+      <div class="record-head"><h3>No interaction while riding</h3><span class="status">Decided</span></div>
+      <dl>
+        <dt>Options considered</dt><dd>A touch interface like a car's; a display with no interaction at all in motion</dd>
+        <dt>Choice</dt><dd>Zero interaction while moving, and the app starts by itself at power-on</dd>
+        <dt>Why</dt><dd>With gloves, one small screen and no passenger, anything that needs a tap is a distraction and a safety problem. There is also nobody to launch an app on a bike.</dd>
+        <dt>Trade-off</dt><dd>Every setting has to be handled while parked or from another device.</dd>
+      </dl>
+    </article>
+    <article class="record" id="d-template">
+      <div class="record-head"><h3>A custom layout, not Google's Car App Library</h3><span class="status">Decided</span></div>
+      <dl>
+        <dt>Options considered</dt><dd>Car App Library templates; Media service template; a plain activity with my own layout</dd>
+        <dt>Choice</dt><dd>A plain activity with my own layout</dd>
+        <dt>Why</dt><dd>The Car App Library gives driver-distraction checks for free but only allows its own fixed screens: lists, grids and navigation. A cluster is a few very large numbers, which those templates cannot express.</dd>
+        <dt>Trade-off</dt><dd>I own the driver-distraction responsibility that the templates would have enforced.</dd>
+      </dl>
+    </article>
+    <article class="record" id="d-minsdk">
+      <div class="record-head"><h3>Minimum Android version 33</h3><span class="status">Decided</span></div>
+      <dl>
+        <dt>Options considered</dt><dd>API 28, which covers 95% of phones; API 33</dd>
+        <dt>Choice</dt><dd>API 33</dd>
+        <dt>Why</dt><dd>Phone install-base percentages are irrelevant here: this app runs on one emulator and one Raspberry Pi, both Android 15. A lower floor would only add compatibility work for vehicle versions I will never target.</dd>
+        <dt>Trade-off</dt><dd>Older Android Automotive versions are ruled out, which is fine for a POC but would need revisiting for a production fleet.</dd>
+      </dl>
+    </article>
+    <article class="record" id="d-subscribe">
+      <div class="record-head"><h3>Subscribe to vehicle values instead of polling</h3><span class="status">Decided</span></div>
+      <dl>
+        <dt>Options considered</dt><dd>Ask for values on a timer; register a callback and let the platform push changes</dd>
+        <dt>Choice</dt><dd>A callback registered with CarService, at its on-change rate</dd>
+        <dt>Why</dt><dd>Pushed updates arrive as fast as the vehicle produces them and cost less power than polling, and the platform also delivers the current value the moment you subscribe, so the display is populated at power-on rather than blank.</dd>
+        <dt>Trade-off</dt><dd>Silence looks identical to a steady value, so the app needs its own staleness check before it can be trusted on the bike.</dd>
+      </dl>
+    </article>
+    <article class="record" id="d-xs650">
+      <div class="record-head"><h3>A second bike with no data bus</h3><span class="status planned">Planned</span></div>
+      <dl>
+        <dt>Options considered</dt><dd>One bike only; add a 1985 Yamaha XS 650 as a second target</dd>
+        <dt>Choice</dt><dd>Add the older bike as a second target after the R3</dd>
+        <dt>Why</dt><dd>If a 40-year-old bike with no electronics and a modern connected bike both feed the same set of vehicle values, that demonstrates the platform layer is independent of the vehicle and only the bridge changes: a useful finding for any manufacturer with a mixed range.</dd>
+        <dt>Trade-off</dt><dd>Extra hardware and sensor work, so it stays out of scope until the R3 prototype runs.</dd>
+      </dl>
+    </article>
+</section>
+
+<section class="day-group">
   <h2>Day 1, 17 September 2026</h2>
   <p class="muted">From the session <a href="day-01.html">From zero to a car that answers back</a>.</p>
     <article class="record" id="d-scope">

@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Android Automotive motorcycle display | Jijo Chacko</title>
-<meta name="description" content="A product manager's hands-on project: learning Android Automotive OS by building a display for a 2026 Yamaha R3.">
+<title>Jijo Chacko: product manager, connected products</title>
+<meta name="description" content="Jijo Chacko, product manager for connected products in the Netherlands: IoT connectivity, mobile apps and API platforms.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏍️</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,124 +16,72 @@
 <nav class="site-nav" aria-label="Site">
   <a class="brand" href="index.html">Jijo Chacko</a>
   <div class="nav-links">
-    <a href="index.html" aria-current="page">Overview</a>
+    <a href="project.html">Project</a>
     <a href="decisions.html">Decisions</a>
-    <a href="index.html#sessions">Sessions</a>
+    <a href="project.html#sessions">Sessions</a>
+    <a href="index.html#contact">Contact</a>
   </div>
 </nav>
 
-<header>
-  <p class="byline">A product manager's hands-on project</p>
-  <h1>Building an Android Automotive display for my motorcycle</h1>
-  <p class="lede">I'm learning how Android Automotive OS moves vehicle data from hardware to a screen. The finish line is a working prototype showing live RPM and gear from my 2026 Yamaha R3. This site holds the session notes and every product decision along the way.</p>
-  <dl class="facts">
-    <div class="live"><dt>Status</dt><dd>Phase 1 of 8, in progress</dd></div>
-    <div><dt>Time</dt><dd>1 hour a day</dd></div>
-    <div><dt>Budget</dt><dd>€500</dd></div>
-    <div><dt>Setup</dt><dd>MacBook Pro M1 Pro, Android 15 automotive emulator</dd></div>
-  </dl>
+<header class="hero">
+  <div>
+    <p class="byline">Product manager, Netherlands</p>
+    <h1>I build connected products that move</h1>
+    <p class="lede">Mobile apps, cloud platforms and physical devices that all have to agree with each other, usually at speed and usually outdoors.</p>
+    <p class="contact-row">
+      <a href="mailto:jijochacko85@gmail.com">jijochacko85@gmail.com</a>
+      <a href="https://www.linkedin.com/in/jijochacko/">LinkedIn</a>
+      <a href="https://github.com/jzie">GitHub</a>
+    </p>
+  </div>
+  <img class="portrait" src="portrait.jpg" width="880" height="1100" alt="Portrait of Jijo Chacko">
 </header>
 
-<section class="prose">
-  <h2>Why a product manager is doing this</h2>
-  <p>I've worked on connected-vehicle products at the system level. Building one end to end teaches the constraints that shape a roadmap: what the platform gives you for free, where data can go wrong, and what it takes to keep a rider safe. Those are the conversations I want to have with engineering teams from real experience, not slides.</p>
+<section id="about" class="prose">
+  <h2>About me</h2>
+  <p>I came to product the long way round: twelve years as a software engineer in Java, C++ and Python, then six as a product owner. That's why I tend to ask "but how would we actually build this?" early in a meeting. I'm told this is annoying at the time and useful later.</p>
+  <p>Today I own IoT connectivity and mobile apps at a global motorcycle manufacturer, covering the roadmap for five hardware families and the companion app on Android and iOS, together good for 151,000 units in two and a half years. That has meant shipping things riders actually touch: ride modes, electronic suspension settings, audio controls, turn-by-turn navigation, and a track app that logs ten riding data points so people can chase their own lap times. It has also meant less glamorous wins I'm just as proud of, like a firmware update monitoring system that cut failed updates by 70%.</p>
+  <p>Before that I built an API gateway platform from zero to one at a global fashion group: the vision, the team, and the technical foundations that eleven applications now depend on, plus in-store apps wired into RFID readers and till systems that gave staff back over an hour a day. Earlier still, a sportswear manufacturer, a commerce consultancy in the UK, and my first years as a Java developer on a grocery site serving seven million people a month.</p>
+  <p>The thread through all of it: I learn by building. Right now that means finding out whether Android Automotive OS can run a motorcycle instrument cluster, with my own bike as the test bench and my evenings as the budget.</p>
 </section>
 
-<section>
-  <div class="prose">
-    <h2>How it works</h2>
-    <p>In Android Automotive, apps never read vehicle hardware directly. Every value passes through two platform layers first. Today the input is a slider in the emulator. Later it will be my bike.</p>
-  </div>
-  <div class="diagram" role="img" aria-label="Diagram. Working today: slider or terminal sends a value to the VHAL, the vehicle data store; CarService checks permissions and streams changes to the cluster app. Planned: the Yamaha R3 data port feeds a read-only bridge, which writes into the same VHAL.">
-    <svg viewBox="0 0 960 336" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <defs>
-        <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path class="ah" d="M0 0 L10 5 L0 10 z"/></marker>
-        <marker id="ap" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path class="ah-plan" d="M0 0 L10 5 L0 10 z"/></marker>
-      </defs>
-      <text class="lab-live" x="24" y="30">Working today</text>
-      <rect class="bx" x="24" y="46" width="200" height="100" rx="12"/>
-      <text class="t1" x="44" y="86">Slider or terminal</text>
-      <text class="t2" x="44" y="112">Emulator controls or adb</text>
-      <rect class="bx-key" x="268" y="46" width="200" height="100" rx="12"/>
-      <text class="t1" x="288" y="86">VHAL</text>
-      <text class="t2" x="288" y="112">Vehicle data store</text>
-      <rect class="bx" x="512" y="46" width="200" height="100" rx="12"/>
-      <text class="t1" x="532" y="86">CarService</text>
-      <text class="t2" x="532" y="112">Checks permissions,</text>
-      <text class="t2" x="532" y="130">streams changes</text>
-      <rect class="bx" x="756" y="46" width="180" height="100" rx="12"/>
-      <text class="t1" x="776" y="86">Cluster app</text>
-      <text class="t2" x="776" y="112">Shows the value</text>
-      <line class="ln" x1="226" y1="96" x2="264" y2="96" marker-end="url(#a)"/>
-      <line class="ln" x1="470" y1="96" x2="508" y2="96" marker-end="url(#a)"/>
-      <line class="ln" x1="714" y1="96" x2="752" y2="96" marker-end="url(#a)"/>
-      <text class="lab-plan" x="24" y="212">Planned</text>
-      <rect class="bx-plan" x="24" y="228" width="200" height="92" rx="12"/>
-      <text class="t1" x="44" y="266">Yamaha R3</text>
-      <text class="t2" x="44" y="292">Diagnostic data port</text>
-      <rect class="bx-plan" x="268" y="228" width="200" height="92" rx="12"/>
-      <text class="t1" x="288" y="266">Read-only bridge</text>
-      <text class="t2" x="288" y="292">Microcontroller, listens only</text>
-      <line class="ln-plan" x1="226" y1="274" x2="264" y2="274" marker-end="url(#ap)"/>
-      <line class="ln-plan" x1="368" y1="226" x2="368" y2="150" marker-end="url(#ap)"/>
-      <text class="note" x="512" y="262">The bike replaces the slider.</text>
-      <text class="note" x="512" y="286">Everything from the VHAL onward stays the same.</text>
-    </svg>
+<section id="projects">
+  <h2>Projects</h2>
+  <article class="project-card">
+    <h3>Can Android Automotive run a motorcycle instrument cluster?</h3>
+    <p class="meta">Personal feasibility study, 2026, in progress</p>
+    <p>Android Automotive was designed for cars: two screens, a seated driver, a cabin. A motorcycle has one screen, a rider wearing gloves in the rain, and warning lights that are legally required to work the instant the key turns.</p>
+    <p>I'm building a working prototype fed by live data from a 2026 Yamaha R3 to find where the boundary sits between a safety layer and an Android layer, and whether what's left makes sense on a vehicle where every euro of the bill of materials is fought over.</p>
+    <p>It's also a deliberate test of my own habit: I spend my days making platform decisions for connected vehicles, so I wanted to know what those decisions feel like from underneath.</p>
+    <p>Where it stands: the app layer works end to end on an emulator. Next is reading the bike's own data. Every decision is recorded with its options and trade-offs, including the ones I got wrong.</p>
+    <p><a href="project.html">Read the build log and decision record</a></p>
+  </article>
+</section>
+
+<section id="skills">
+  <h2>Skills</h2>
+  <div class="skills">
+    <div><h3>Product</h3><p>Roadmap ownership · Product vision and 0-to-1 delivery · User interviews and surveys · Prototyping and testing · Prioritisation and trade-offs · Writing specs and decision records</p></div>
+    <div><h3>Connected hardware and platforms</h3><p>IoT connectivity · Consumer electronics · Firmware updates and update monitoring · Hardware vendor selection and cost-performance trade-offs · API platforms and integrations · Mobile apps on Android and iOS</p></div>
+    <div><h3>Engineering background</h3><p>Java, C++, Python · Mobile app development · Design and testing · Android Automotive OS</p></div>
+    <div><h3>Ways of working</h3><p>Stakeholder alignment across locations and disciplines · Cross-team workshops · Team building and mentoring · Scrum, Kanban, SAFe</p></div>
+    <div><h3>Tools</h3><p>Figma · Jira · Confluence · GitHub</p></div>
+    <div><h3>Certifications and education</h3><p>Advanced Professional Scrum Product Owner (PSPO II), Scrum.org · Professional Scrum Product Owner (PSPO I), Scrum.org · Product Manager Certification, Product School · BTech in Computer Science and Engineering</p></div>
   </div>
 </section>
 
-<section id="sessions">
-  <h2>Session notes</h2>
-  <p class="muted prose">One page per session: what I set out to do, what I did, the evidence and what I learned.</p>
-  <ol class="sessions" reversed>
-    <li><a href="day-01.html">
-      <span class="s-day">Day 1</span>
-      <span class="s-title">From zero to a car that answers back</span>
-      <span class="s-date">17 Sep 2026</span>
-      <span class="s-sum">Set up a virtual Android Automotive car, then read and wrote live vehicle speed directly.</span>
-    </a></li>
-  </ol>
-</section>
-
-<section>
-  <h2>Product decisions</h2>
-  <p class="prose">6 decisions so far, each recorded with options, reasoning and trade-offs.</p>
-  <ul class="dlist">
-    <li><a href="decisions.html#d-scope">Build on Android Automotive, not a plain phone app</a> <span>(decided)</span></li>
-    <li><a href="decisions.html#d-version">Learn on Android 15</a> <span>(decided)</span></li>
-    <li><a href="decisions.html#d-image">Use the Google APIs emulator image</a> <span>(decided)</span></li>
-    <li><a href="decisions.html#d-display">Raspberry Pi for the display</a> <span>(planned)</span></li>
-    <li><a href="decisions.html#d-cadence">One focused step per session</a> <span>(decided)</span></li>
-    <li><a href="decisions.html#d-public">Build in public</a> <span>(decided)</span></li>
-  </ul>
-  <p><a href="decisions.html">Read the full decision log</a></p>
-</section>
-
-<section class="prose">
-  <h2>Safety rules I've set</h2>
-  <ul class="rules">
-    <li><strong>Read-only on the bike.</strong> The bridge only listens to the motorcycle's data and never sends anything onto it.</li>
-    <li><strong>Glanceable, not distracting.</strong> No animations, notifications or dense text while riding.</li>
-    <li><strong>Check before mounting.</strong> Road rules for displays, helmet approval and warranty impact get checked before anything goes on the bike.</li>
-  </ul>
-</section>
-
-<section>
-  <h2>Roadmap</h2>
-  <ol class="road">
-    <li class="now"><span>Android Automotive basics and the emulator</span><span class="st">In progress</span></li>
-    <li class="next"><span>First app that reads vehicle data</span><span class="st">Next</span></li>
-    <li><span>Custom Android build with my own bike properties</span><span class="st">Planned</span></li>
-    <li><span>Listen to the R3's data port and decode it</span><span class="st">Planned</span></li>
-    <li><span>Microcontroller bridge</span><span class="st">Planned</span></li>
-    <li><span>Live bike data on screen</span><span class="st">Planned</span></li>
-    <li><span>Rider-first display design</span><span class="st">Planned</span></li>
-    <li><span>Power, weather and vibration hardening</span><span class="st">Planned</span></li>
-  </ol>
+<section id="contact" class="prose">
+  <h2>Contact</h2>
+  <p class="contact-row">
+    <a href="mailto:jijochacko85@gmail.com">jijochacko85@gmail.com</a>
+    <a href="https://www.linkedin.com/in/jijochacko/">linkedin.com/in/jijochacko</a>
+    <a href="https://github.com/jzie">github.com/jzie</a>
+  </p>
+  <p class="muted" style="margin-top:14px">Based in the Netherlands.</p>
 </section>
 
 <footer>
-  <p>Last updated 17 September 2026.</p>
+  <p>Last updated 18 September 2026.</p>
 </footer>
 </div>
 </body>

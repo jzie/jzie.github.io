@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Day 2: My own app, reading the vehicle | Jijo Chacko</title>
+<meta name="description" content="Session notes, day 2: building an Android Automotive app that reads live speed and gear through CarService, and reframing the project as a manufacturer-style feasibility POC.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏍️</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="wrap">
+<nav class="site-nav" aria-label="Site">
+  <a class="brand" href="index.html">Jijo Chacko</a>
+  <div class="nav-links">
+    <a href="project.html">Project</a>
+    <a href="decisions.html">Decisions</a>
+    <a href="project.html#sessions" aria-current="page">Sessions</a>
+    <a href="index.html#contact">Contact</a>
+  </div>
+</nav>
+
+<header>
+  <p class="byline">Day 2, 18 September 2026</p>
+  <h1>My own app, reading the vehicle</h1>
+  <p class="lede">Goal for the session: get my own app onto the vehicle and have it read live values through the platform rather than from a terminal. It also turned into the session where the project found its real question.</p>
+  <dl class="facts three">
+    <div><dt>Phase</dt><dd>2 of 8: first app reading vehicle data</dd></div>
+    <div><dt>Tools</dt><dd>Android Studio, Kotlin, car library, Android 15 emulator</dd></div>
+    <div class="live"><dt>Outcome</dt><dd>Live speed and gear on my own screen</dd></div>
+  </dl>
+</header>
+
+<section>
+  <h2>What I did, and why</h2>
+  <ol class="steps">
+    <li><span><span class="what">Created the app from the Phone and Tablet template, Empty Views Activity, package com.jzie.motohud, minimum API 33.</span><span class="why">Why: The Car category only offers media, messaging or Car App Library templates, and none of them allow a custom layout. A cluster is a handful of very large numbers, so a plain activity is the right base.</span></span></li>
+    <li><span><span class="what">Declared CAR_SPEED and CAR_POWERTRAIN permissions and marked the app automotive-only in the manifest.</span><span class="why">Why: CarService refuses vehicle values to any app that has not declared what it wants. Declaring it is only half: a sensitive permission also needs the driver's approval at runtime, and can be revoked later.</span></span></li>
+    <li><span><span class="what">Linked the car library with useLibrary('android.car') in the module build file.</span><span class="why">Why: The car library ships with the vehicle, not with the app. It is compiled against but provided at runtime, which is a real platform boundary: a device without it fails when the app runs, not when it builds.</span></span></li>
+    <li><span><span class="what">Replaced the layout with two very large values on a black background.</span><span class="why">Why: A rider reads a cluster in well under a second, at arm's length, often in sunlight. Size and contrast are the whole design at this stage; decoration would be a distraction.</span></span></li>
+    <li><span><span class="what">Subscribed to speed and gear with CarPropertyManager, at the platform's on-change rate.</span><span class="why">Why: Pushed updates arrive as fast as the vehicle produces them and cost less power than polling on a timer. The subscription is released when the screen closes, since one left running would outlive it.</span></span></li>
+    <li><span><span class="what">Ran it on the emulator, approved the permission prompt and moved the vehicle controls.</span><span class="why">Why: This is the end-to-end proof: vehicle value, platform, permission check, my app, screen. Every later phase only replaces what feeds the first box.</span></span></li>
+  </ol>
+
+</section>
+
+<section>
+  <h2>Evidence</h2>
+  <div class="evidence">
+    <div>
+      <h3>Asking for vehicle data</h3>
+<pre>&lt;uses-permission android:name=<span class="v">"android.car.permission.CAR_SPEED"</span> /&gt;
+&lt;uses-permission android:name=<span class="v">"android.car.permission.CAR_POWERTRAIN"</span> /&gt;
+&lt;uses-feature android:name="android.hardware.type.automotive"
+    android:required="true" /&gt;</pre>
+      <p class="small muted">Declared in the manifest, then approved by the driver at runtime.</p>
+<pre>properties.registerCallback(
+    callback, VehiclePropertyIds.<span class="v">PERF_VEHICLE_SPEED</span>,
+    CarPropertyManager.SENSOR_RATE_ONCHANGE)</pre>
+      <p class="small muted">The platform pushes each change to the app, and delivers the current value on subscribing.</p>
+    </div>
+    <div>
+      <h3>What the screen showed</h3>
+      <div class="tw">
+        <table>
+          <thead><tr><th>Emulator control</th><th>My app</th></tr></thead>
+          <tbody>
+            <tr><td>Speed 0, gear P</td><td><code>0</code> and <code>P</code> immediately on launch</td></tr>
+            <tr><td>Speed raised, gear D</td><td>Number follows in km/h, letter changes</td></tr>
+            <tr><td>Back to 0 and P</td><td>Both follow down</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="small muted" style="margin-top:12px">The platform stores speed in metres per second; converting to km/h is the app's job.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>What I learned</h2>
+  <div class="learn">
+    <div><h3>Permissions belong to the app, and are enforced by the platform</h3><p>CarService already has vehicle access. My app has none until it declares what it wants and the driver approves it. On a motorcycle that matters: if data reaches the vehicle layer but not the screen, this is usually why.</p></div>
+    <div><h3>Subscribing gives you the present, not just the future</h3><p>Both values appeared the instant the app subscribed, rather than waiting for something to move. On a bike that means the cluster is populated at power-on instead of blank.</p></div>
+    <div><h3>Silence and stillness look identical</h3><p>A value that stops arriving looks exactly like a value that is not changing. A cluster that freezes on the last known number is worse than one showing nothing, so the app needs its own staleness check.</p></div>
+    <div><h3>Gear is a code, not a letter</h3><p>The platform sends gear as a number that I map to a label. A car's park, reverse and drive do not fit a motorcycle's neutral and six gears, which is a first concrete example of a car-shaped data model needing custom values.</p></div>
+  </div>
+</section>
+
+<section class="prose">
+  <h2>The question this session settled</h2>
+  <p>Partway through, a simple observation changed the project: a motorcycle has no main screen. It has an instrument cluster and nothing else. That rules out the two-screen model Android Automotive assumes, and it raises the question a manufacturer would actually ask.</p>
+  <p>The legally required warning lights, turn signals, high beam, neutral, oil pressure, ABS and the engine light, must appear the moment the key turns and must never be wrong. Android takes tens of seconds to start and carries no automotive safety certification, so it cannot be the only thing on that screen. The industry answer is a split: a small, instant safety layer owns the regulated lights, and Android owns everything else.</p>
+  <div class="qbox">
+    <p><strong>So the POC question is:</strong> can Android Automotive own the rider-facing part of a motorcycle cluster, sitting above a separate safety layer, at a start-up time, power draw and cost that make sense on a motorcycle?</p>
+  </div>
+  <p>That is a better question than the one I started with, and the next session turns it into criteria I can pass or fail against.</p>
+</section>
+
+<section class="prose">
+  <h2>Decisions made today</h2>
+  <ul class="dlist">
+    <li><a href="decisions.html#d-poc">Frame this as a manufacturer-style feasibility POC</a></li>
+    <li><a href="decisions.html#d-onescreen">Design for a single display</a></li>
+    <li><a href="decisions.html#d-nogloves">No interaction while riding</a></li>
+    <li><a href="decisions.html#d-template">A custom layout, not Google's Car App Library</a></li>
+    <li><a href="decisions.html#d-minsdk">Minimum Android version 33</a></li>
+    <li><a href="decisions.html#d-subscribe">Subscribe to vehicle values instead of polling</a></li>
+    <li><a href="decisions.html#d-xs650">A second bike with no data bus</a></li>
+  </ul>
+</section>
+
+<section class="prose">
+  <h2>Next session</h2>
+  <p>Write the POC criteria: what start-up time, data freshness, readability and cost would count as a pass. Then start on my own motorcycle values, which need a custom Android build rather than the stock emulator.</p>
+</section>
+
+<nav class="pager" aria-label="Sessions">
+  <a href="day-01.html">Previous session: Day 1</a>
+  <a href="project.html#sessions">All sessions</a>
+</nav>
+
+<footer>
+  <p>Last updated 17 September 2026.</p>
+</footer>
+</div>
+</body>
+</html>
