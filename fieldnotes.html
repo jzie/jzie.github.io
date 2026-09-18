@@ -43,109 +43,82 @@
 
 <section>
   <h2>1. The differences that matter</h2>
-  <div class="entry">
-    <h3>One display, not two<span class="tag confirmed">Confirmed, Day 2</span></h3>
-    <p>The platform assumes a central touchscreen plus a cluster behind the wheel. A motorcycle has a cluster and nothing else, so everything the platform does with a main screen has nowhere to go. <a href="day-02.html">Day 2</a></p>
-  </div>
-  <div class="entry">
-    <h3>Nothing to touch while moving<span class="tag assumed">Assumed</span></h3>
-    <p>A car driver can safely touch a screen at a red light. A rider wears gloves, has both hands loaded and has no passenger to hand things to. Any interaction that is not available while parked is effectively unavailable.</p>
-  </div>
-  <div class="entry">
-    <h3>Warning lights are legally required, and instant<span class="tag documented">Documented</span></h3>
-    <p>Turn signals, high beam, neutral, oil pressure, ABS and the engine light must appear the moment the key turns. Android takes tens of seconds to start, so it cannot be the only thing rendering that screen.</p>
-  </div>
-  <div class="entry">
-    <h3>Android is not a safety-certified system<span class="tag documented">Documented</span></h3>
-    <p>Android Automotive holds no automotive safety certification such as ISO 26262, and manufacturers isolate it from safety-critical functions, often running it alongside a real-time operating system. Google's own architecture splits the cluster: a high availability renderer draws the safety and regulatory elements, and the Android layer draws everything else.</p>
-  </div>
-  <div class="entry">
-    <h3>The data model is car-shaped<span class="tag confirmed">Confirmed, Day 2</span></h3>
-    <p>Gear arrives as park, reverse, neutral and drive. A motorcycle has neutral and six gears. Lean angle, chain condition and similar do not exist in the platform at all. <a href="day-02.html">Day 2</a></p>
-  </div>
-  <div class="entry">
-    <h3>The environment is harsher<span class="tag assumed">Assumed</span></h3>
-    <p>Direct sunlight, rain, engine vibration and temperatures from freezing to baking, with no cabin around any of it. All of it affects readability, mounting and component life.</p>
-  </div>
-  <div class="entry">
-    <h3>Every euro is fought over<span class="tag assumed">Assumed</span></h3>
-    <p>A cluster is a far larger share of the bill of materials on a €6,000 motorcycle than on a €40,000 car, and there is less electrical power to spare.</p>
+  <div class="tw fn-table">
+    <table>
+      <thead><tr><th>Difference</th><th>What it means on a motorcycle</th><th>Basis</th></tr></thead>
+      <tbody>
+        <tr><td>One display, not two</td><td>The platform assumes a central touchscreen plus a cluster behind the wheel. A motorcycle has a cluster and nothing else, so everything the platform does with a main screen has nowhere to go. <a href="day-02.html">Day 2</a></td><td><span class="tag confirmed">Confirmed</span></td></tr>
+        <tr><td>Nothing to touch while moving</td><td>A car driver can safely touch a screen at a red light. A rider wears gloves, has both hands loaded and has no passenger to hand things to. Any interaction that is not available while parked is effectively unavailable.</td><td><span class="tag assumed">Assumed</span></td></tr>
+        <tr><td>Warning lights are legally required, and instant</td><td>Turn signals, high beam, neutral, oil pressure, ABS and the engine light must appear the moment the key turns. Android takes tens of seconds to start, so it cannot be the only thing rendering that screen.</td><td><span class="tag documented">Documented</span></td></tr>
+        <tr><td>Android is not a safety-certified system</td><td>Android Automotive holds no automotive safety certification such as ISO 26262, and manufacturers isolate it from safety-critical functions, often running it alongside a real-time operating system. Google's own architecture splits the cluster: a high availability renderer draws the safety and regulatory elements, and the Android layer draws the rest.</td><td><span class="tag documented">Documented</span></td></tr>
+        <tr><td>The data model is car-shaped</td><td>Gear arrives as park, reverse, neutral and drive. A motorcycle has neutral and six gears. Lean angle, chain condition and similar do not exist in the platform at all. <a href="day-02.html">Day 2</a></td><td><span class="tag confirmed">Confirmed</span></td></tr>
+        <tr><td>The environment is harsher</td><td>Direct sunlight, rain, engine vibration and temperatures from freezing to baking, with no cabin around any of it. All of it affects readability, mounting and component life.</td><td><span class="tag assumed">Assumed</span></td></tr>
+        <tr><td>Every euro is fought over</td><td>A cluster is a far larger share of the bill of materials on a €6,000 motorcycle than on a €40,000 car, and there is less electrical power to spare.</td><td><span class="tag assumed">Assumed</span></td></tr>
+      </tbody>
+    </table>
   </div>
 </section>
 
 <section>
   <h2>2. Changes we made</h2>
-  <div class="entry">
-    <h3>Treated the single display as the whole cluster<span class="tag confirmed">Confirmed, Day 2</span></h3>
-    <p>Rather than the platform cluster APIs, which assume a second screen, we run one full-screen app. Cheaper and simpler, and it costs us the platform's own cluster integration. <a href="decisions.html#d-onescreen">Decision</a></p>
-  </div>
-  <div class="entry">
-    <h3>Built a custom layout instead of using Google's templates<span class="tag confirmed">Confirmed, Day 2</span></h3>
-    <p>The Car App Library gives driver-distraction checks for free but only allows lists, grids and navigation screens. A cluster is a few very large numbers, so we took the custom route and the responsibility that comes with it. <a href="decisions.html#d-template">Decision</a></p>
-  </div>
-  <div class="entry">
-    <h3>Converted units in the display layer<span class="tag confirmed">Confirmed, Day 1</span></h3>
-    <p>The platform stores speed in metres per second and the app decides what the rider sees. Keeping that split means a change of units never touches the data path. <a href="day-01.html">Day 1</a></p>
-  </div>
-  <div class="entry">
-    <h3>Subscribed to values rather than polling<span class="tag confirmed">Confirmed, Day 2</span></h3>
-    <p>Lower power, faster updates, and the current value arrives on subscribing, so the cluster is populated at power-on rather than blank. <a href="decisions.html#d-subscribe">Decision</a></p>
+  <div class="tw fn-table">
+    <table>
+      <thead><tr><th>Change</th><th>Why, and what it cost</th><th>Basis</th></tr></thead>
+      <tbody>
+        <tr><td>Treated the single display as the whole cluster</td><td>Rather than the platform cluster APIs, which assume a second screen, we run one full-screen app. Cheaper and simpler, and it costs us the platform's own cluster integration. <a href="decisions.html#d-onescreen">Decision</a></td><td><span class="tag confirmed">Confirmed</span></td></tr>
+        <tr><td>Built a custom layout instead of Google's templates</td><td>The Car App Library gives driver-distraction checks for free but only allows lists, grids and navigation screens. A cluster is a few very large numbers, so we took the custom route and the responsibility that comes with it. <a href="decisions.html#d-template">Decision</a></td><td><span class="tag confirmed">Confirmed</span></td></tr>
+        <tr><td>Converted units in the display layer</td><td>The platform stores speed in metres per second and the app decides what the rider sees. Keeping that split means a change of units never touches the data path. <a href="day-01.html">Day 1</a></td><td><span class="tag confirmed">Confirmed</span></td></tr>
+        <tr><td>Subscribed to values rather than polling</td><td>Lower power, faster updates, and the current value arrives on subscribing, so the cluster is populated at power-on rather than blank. <a href="decisions.html#d-subscribe">Decision</a></td><td><span class="tag confirmed">Confirmed</span></td></tr>
+      </tbody>
+    </table>
   </div>
 </section>
 
 <section>
   <h2>3. Limitations found</h2>
-  <div class="entry">
-    <h3>Gear cannot express a motorcycle gearbox<span class="tag confirmed">Confirmed, Day 2</span></h3>
-    <p>The standard gear value has no way to say third of six.</p>
-  </div>
-  <div class="entry">
-    <h3>No motorcycle-specific values exist<span class="tag documented">Documented</span></h3>
-    <p>Nothing for lean angle, or anything else particular to two wheels. Custom vendor values are the only route.</p>
-  </div>
-  <div class="entry">
-    <h3>A frozen value looks exactly like a steady one<span class="tag confirmed">Confirmed, Day 2</span></h3>
-    <p>The platform delivers changes, so silence and stillness are indistinguishable. On a cluster that is dangerous.</p>
-  </div>
-  <div class="entry">
-    <h3>Cluster APIs assume a second display<span class="tag documented">Documented</span></h3>
-    <p>The platform's cluster path expects the manufacturer to provide a service driving a secondary display, behind a dedicated permission. On a one-screen vehicle that design does not fit.</p>
-  </div>
-  <div class="entry">
-    <h3>Start-up time cannot meet the key-turn expectation<span class="tag assumed">Assumed</span></h3>
-    <p>Not yet measured on real hardware. Currently the single biggest untested risk in the project.</p>
+  <div class="tw fn-table">
+    <table>
+      <thead><tr><th>Limitation</th><th>Detail</th><th>Basis</th></tr></thead>
+      <tbody>
+        <tr><td>Gear cannot express a motorcycle gearbox</td><td>The standard gear value has no way to say third of six. <a href="day-02.html">Day 2</a></td><td><span class="tag confirmed">Confirmed</span></td></tr>
+        <tr><td>No motorcycle-specific values exist</td><td>Nothing for lean angle, or anything else particular to two wheels. Custom vendor values are the only route.</td><td><span class="tag documented">Documented</span></td></tr>
+        <tr><td>A frozen value looks like a steady one</td><td>The platform delivers changes, so silence and stillness are indistinguishable. On a cluster that is dangerous.</td><td><span class="tag confirmed">Confirmed</span></td></tr>
+        <tr><td>Cluster APIs assume a second display</td><td>The platform's cluster path expects the manufacturer to provide a service driving a secondary display, behind a dedicated permission. On a one-screen vehicle that design does not fit.</td><td><span class="tag documented">Documented</span></td></tr>
+        <tr><td>Start-up time cannot meet the key-turn expectation</td><td>Not yet measured on real hardware. Currently the single biggest untested risk in the project.</td><td><span class="tag assumed">Assumed</span></td></tr>
+      </tbody>
+    </table>
   </div>
 </section>
 
 <section>
   <h2>4. Workarounds</h2>
-  <div class="entry">
-    <h3>Split the cluster<span class="tag planned">Planned</span></h3>
-    <p>A small, instant safety layer owns the regulated warning lights and Android owns everything else. This mirrors how the industry already handles it, and it is the heart of the feasibility question.</p>
-  </div>
-  <div class="entry">
-    <h3>Custom vendor values for motorcycle data<span class="tag planned">Planned, Phase 3</span></h3>
-    <p>Define our own properties in the vendor range for gear, RPM and the rest, which requires a custom Android build rather than a stock image.</p>
-  </div>
-  <div class="entry">
-    <h3>Staleness timeout in the app<span class="tag planned">Planned</span></h3>
-    <p>Blank a value when it is older than a set age, rather than showing a number that stopped being true.</p>
-  </div>
-  <div class="entry">
-    <h3>Start by itself at power-on<span class="tag planned">Planned</span></h3>
-    <p>Nobody taps an icon on a motorcycle.</p>
+  <div class="tw fn-table">
+    <table>
+      <thead><tr><th>Workaround</th><th>What it does</th><th>Limitation it answers</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td>Split the cluster</td><td>A small, instant safety layer owns the regulated warning lights and Android owns everything else. This mirrors how the industry already handles it, and it is the heart of the feasibility question.</td><td>Answers the start-up and safety limitations</td><td><span class="tag planned">Planned</span></td></tr>
+        <tr><td>Custom vendor values for motorcycle data</td><td>Define our own properties in the vendor range for gear, RPM and the rest, which requires a custom Android build rather than a stock image.</td><td>Answers the car-shaped data model</td><td><span class="tag planned">Phase 3</span></td></tr>
+        <tr><td>Staleness timeout in the app</td><td>Blank a value when it is older than a set age, rather than showing a number that stopped being true.</td><td>Answers the frozen value problem</td><td><span class="tag planned">Planned</span></td></tr>
+        <tr><td>Start by itself at power-on</td><td>Nobody taps an icon on a motorcycle, so the cluster app has to launch itself and stay up.</td><td>Answers the no-interaction constraint</td><td><span class="tag planned">Planned</span></td></tr>
+      </tbody>
+    </table>
   </div>
 </section>
 
-<section class="prose">
+<section>
   <h2>5. Open questions</h2>
-  <ul class="rules">
-    <li>How long from power-on to a usable Android cluster on real hardware?</li>
-    <li>Does the split cluster hold up, or does the safety layer end up drawing so much that Android adds little?</li>
-    <li>Is the R3's diagnostic port usable in listen-only mode, or does it only answer when asked?</li>
-    <li>What does this add to the bill of materials, and what does it draw?</li>
-    <li>Is an affordable display readable in direct sunlight?</li>
-  </ul>
+  <div class="tw fn-table">
+    <table>
+      <thead><tr><th>Question</th><th>When I expect to answer it</th></tr></thead>
+      <tbody>
+        <tr><td>How long from power-on to a usable Android cluster on real hardware?</td><td>Phase 6, on the Raspberry Pi</td></tr>
+        <tr><td>Does the split cluster hold up, or does the safety layer draw so much that Android adds little?</td><td>Phase 7, once the design is real</td></tr>
+        <tr><td>Is the R3's diagnostic port usable in listen-only mode, or does it only answer when asked?</td><td>Phase 4, first capture session</td></tr>
+        <tr><td>What does this add to the bill of materials, and what does it draw?</td><td>Phase 8, with final hardware</td></tr>
+        <tr><td>Is an affordable display readable in direct sunlight?</td><td>Phase 7, display selection</td></tr>
+      </tbody>
+    </table>
+  </div>
 </section>
 
 <section class="prose">

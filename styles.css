@@ -179,3 +179,13 @@ ol.road li.done::before,ol.road li.done .st{color:var(--signal)}
 .legend{margin:20px 0 0;padding:0;list-style:none;max-width:72ch}
 .legend li{padding:6px 0}
 .legend strong{font-weight:600}
+
+/* Skills lists */
+.skills ul{margin:6px 0 0;padding:0;list-style:none}
+.skills li{padding:3px 0;color:var(--muted)}
+/* Field notes tables */
+.fn-table{margin-top:18px}
+.fn-table table{min-width:660px}
+.fn-table th:first-child,.fn-table td:first-child{width:26%}
+.fn-table td:first-child{font-weight:600}
+.fn-table th:last-child,.fn-table td:last-child{width:150px}
