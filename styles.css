@@ -216,3 +216,6 @@ ol.road li.done::before,ol.road li.done .st{color:var(--signal)}
 .example{border:1px solid var(--rule);border-radius:12px;background:var(--surface);padding:16px 18px;margin-top:18px;max-width:760px}
 .example .row{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* Landing tagline under the name */
+.tagline{font:600 clamp(1.5rem,3.2vw,2.1rem)/1.15 var(--display);margin:-8px 0 16px;color:var(--signal)}
