@@ -189,3 +189,30 @@ ol.road li.done::before,ol.road li.done .st{color:var(--signal)}
 .fn-table th:first-child,.fn-table td:first-child{width:26%}
 .fn-table td:first-child{font-weight:600}
 .fn-table th:last-child,.fn-table td:last-child{width:150px}
+
+/* Acceptance criteria tracker */
+:root{--fail:#B3261E}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--fail:#F2877E}}
+:root[data-theme="dark"]{--fail:#F2877E}
+.crit table{min-width:980px}
+.crit th:nth-child(2){width:38%}
+.crit td{vertical-align:top}
+.crit .name{font-weight:600}
+.crit .passif{display:block;color:var(--muted);font-size:.93rem;margin-top:3px}
+.crit .must{display:inline-block;font:600 .72rem/1.5 var(--body);letter-spacing:.02em;color:var(--ink);border:1px solid var(--ink);border-radius:999px;padding:0 7px;margin-left:8px;vertical-align:2px}
+.crit .num{font:600 1.1rem var(--display);color:var(--muted);width:44px}
+.st-badge{display:inline-block;font:600 .8rem/1.5 var(--body);padding:1px 9px;border-radius:999px;white-space:nowrap}
+.st-pass{background:var(--signal-soft);color:var(--signal)}
+.st-fail{border:1px solid var(--fail);color:var(--fail)}
+.st-regressed{border:1px dashed var(--fail);color:var(--fail)}
+.st-untested{border:1px solid var(--rule);color:var(--muted)}
+.st-tracked{border:1px solid var(--rule);color:var(--ink)}
+.runs{display:flex;gap:4px;flex-wrap:wrap;align-items:center;min-height:14px}
+.run{width:13px;height:13px;border-radius:3px;display:inline-block}
+.run.pass{background:var(--signal)}
+.run.fail{background:var(--fail)}
+.runs .none{color:var(--muted);font-size:.9rem}
+.date{white-space:nowrap}
+.example{border:1px solid var(--rule);border-radius:12px;background:var(--surface);padding:16px 18px;margin-top:18px;max-width:760px}
+.example .row{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}

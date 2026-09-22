@@ -90,6 +90,12 @@
   <h2>Session notes</h2>
   <p class="muted prose">One page per session: what I set out to do, each step and why I took it, the evidence and what I learned.</p>
   <ol class="sessions" reversed>
+    <li><a href="day-03.html">
+      <span class="s-day">Day 3</span>
+      <span class="s-title">Deciding what counts as a yes</span>
+      <span class="s-date">19 Sep 2026</span>
+      <span class="s-sum">Turned the POC question into thirteen pass-or-fail criteria and added a phase the plan was missing.</span>
+    </a></li>
     <li><a href="day-02.html">
       <span class="s-day">Day 2</span>
       <span class="s-title">My own app, reading the vehicle</span>
@@ -107,14 +113,14 @@
 
 <section>
   <h2>Product decisions</h2>
-  <p class="prose">13 decisions so far, each recorded with the options considered, the reasoning and the trade-off. The most recent:</p>
+  <p class="prose">21 decisions so far, each recorded with the options considered, the reasoning and the trade-off. The most recent:</p>
   <ul class="dlist">
-    <li><a href="decisions.html#d-xs650">A second bike with no data bus</a> <span>(planned)</span></li>
-    <li><a href="decisions.html#d-subscribe">Subscribe to vehicle values instead of polling</a> <span>(decided)</span></li>
-    <li><a href="decisions.html#d-minsdk">Minimum Android version 33</a> <span>(decided)</span></li>
-    <li><a href="decisions.html#d-template">A custom layout, not Google's Car App Library</a> <span>(decided)</span></li>
-    <li><a href="decisions.html#d-nogloves">No interaction while riding</a> <span>(decided)</span></li>
-    <li><a href="decisions.html#d-onescreen">Design for a single display</a> <span>(decided)</span></li>
+    <li><a href="decisions.html#d-safetyphase">A dedicated phase for the safety layer</a> <span>(decided)</span></li>
+    <li><a href="decisions.html#d-cost">Track cost rather than gate on it</a> <span>(decided)</span></li>
+    <li><a href="decisions.html#d-ridelog">Log every frame on the bus</a> <span>(decided)</span></li>
+    <li><a href="decisions.html#d-extension">Gear position and tyre pressure as the extension tests</a> <span>(decided)</span></li>
+    <li><a href="decisions.html#d-freshness">Measure freshness by slow-motion video</a> <span>(decided)</span></li>
+    <li><a href="decisions.html#d-baseline">The stock R3 as the baseline</a> <span>(decided)</span></li>
   </ul>
   <p><a href="decisions.html">Read the full decision log</a></p>
 </section>
@@ -130,20 +136,26 @@
 </section>
 
 <section class="prose">
+  <h2>Acceptance criteria</h2>
+  <p>Thirteen pass or fail criteria, four of them must-pass, each with a threshold agreed before testing and a full history of results. <a href="criteria.html">See the criteria and their status</a></p>
+</section>
+
+<section class="prose">
   <h2>Field notes</h2>
   <p>Everything this build teaches me about the gap between cars and motorcycles goes into a separate living reference: the differences, the limitations and the workarounds, labelled by how well each one is established. <a href="fieldnotes.html">Read the field notes</a></p>
 </section>
 
 <section>
   <h2>Roadmap</h2>
-  <p class="prose muted">Nine phases. The seventh exists because a manufacturer's real question is not only whether the platform can show what the vehicle already knows, but whether it can carry something the vehicle has never measured: a sensor added to the bike, its data carried through the same path as everything else, and shown on the cluster. That is also the only route available on a bike old enough to have no data bus at all.</p>
+  <p class="prose muted">Ten phases. Two were added once the shape of the question became clear. Phase 7 builds the safety layer that owns the legally required warning lights, because two of the four must-pass criteria cannot be tested without it; it comes before anything optional because must-pass work outranks nice-to-have work. Phase 8 exists because a manufacturer's real question is not only whether the platform can show what the vehicle already knows, but whether it can carry something the vehicle has never measured, which is also the only route on a bike old enough to have no data bus at all.</p>
   <ol class="road">
     <li class="done"><span>Android Automotive basics and the emulator</span><span class="st">Done</span></li>
     <li class="done"><span>First app that reads vehicle data</span><span class="st">Done</span></li>
-    <li class="next"><span>POC criteria, then my own bike values in a custom Android build</span><span class="st">Next</span></li>
+    <li class="now"><span>Acceptance criteria, then my own bike values in a custom Android build</span><span class="st">In progress</span></li>
     <li><span>Listen to the R3's data port and decode it</span><span class="st">Planned</span></li>
     <li><span>Microcontroller bridge</span><span class="st">Planned</span></li>
     <li><span>Live bike data on screen</span><span class="st">Planned</span></li>
+    <li><span>A safety layer for the warning lights, independent of Android</span><span class="st">Planned</span></li>
     <li><span>Add a sensor the bike doesn't have, and show it</span><span class="st">Planned</span></li>
     <li><span>Rider-first cluster design</span><span class="st">Planned</span></li>
     <li><span>Power, weather and vibration hardening</span><span class="st">Planned</span></li>
@@ -151,7 +163,7 @@
 </section>
 
 <footer>
-  <p>Last updated 17 September 2026.</p>
+  <p>Last updated 19 September 2026.</p>
 </footer>
 </div>
 </body>

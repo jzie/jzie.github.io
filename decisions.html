@@ -31,6 +31,83 @@
 </header>
 
 <section class="day-group">
+  <h2>Day 3, 19 September 2026</h2>
+  <p class="muted">From the session <a href="day-03.html">Deciding what counts as a yes</a>.</p>
+    <article class="record" id="d-criteria">
+      <div class="record-head"><h3>Pass-or-fail criteria, with a must-pass subset</h3><span class="status">Decided</span></div>
+      <dl>
+        <dt>Options considered</dt><dd>A working demo as the measure of success; a scored checklist; pass-or-fail criteria with a must-pass subset</dd>
+        <dt>Choice</dt><dd>Thirteen pass-or-fail criteria, four of them must-pass: warning lights at key-turn, a usable cluster after key-turn, the safety split surviving an Android crash, and read-only on the bike</dd>
+        <dt>Why</dt><dd>A demo proves something works once, and a score can hide a fatal failure behind many small wins. Must-pass criteria separate a no from a not yet.</dd>
+        <dt>Trade-off</dt><dd>One failed must-pass answers no, however impressive the rest.</dd>
+      </dl>
+    </article>
+    <article class="record" id="d-thresholds">
+      <div class="record-head"><h3>Thresholds set before any testing</h3><span class="status">Decided</span></div>
+      <dl>
+        <dt>Options considered</dt><dd>Set numbers after seeing first results; set them now</dd>
+        <dt>Choice</dt><dd>Set now, including 10 seconds to a usable cluster and at most 1 mA added with the key off</dd>
+        <dt>Why</dt><dd>Thresholds chosen after testing tend to fit the results. Setting them first keeps the verdict honest.</dd>
+        <dt>Trade-off</dt><dd>Some numbers may prove unrealistic. Any change will be recorded on the criteria page, never made quietly.</dd>
+      </dl>
+    </article>
+    <article class="record" id="d-baseline">
+      <div class="record-head"><h3>The stock R3 as the baseline</h3><span class="status">Decided</span></div>
+      <dl>
+        <dt>Options considered</dt><dd>Absolute targets only; benchmark against the motorcycle's own cluster</dd>
+        <dt>Choice</dt><dd>Benchmark timing criteria against the stock cluster</dd>
+        <dt>Why</dt><dd>At least as good as the original is a bar nobody can argue with, and it costs one afternoon with a phone camera.</dd>
+        <dt>Trade-off</dt><dd>The stock cluster has its own small delays, so results are relative rather than absolute.</dd>
+      </dl>
+    </article>
+    <article class="record" id="d-freshness">
+      <div class="record-head"><h3>Measure freshness by slow-motion video</h3><span class="status">Decided</span></div>
+      <dl>
+        <dt>Options considered</dt><dd>Timestamps at each stage of the data path; slow-motion video against the stock cluster</dd>
+        <dt>Choice</dt><dd>Slow-motion video: 19 of 20 neutral-to-first shifts within 200 ms of the stock cluster</dd>
+        <dt>Why</dt><dd>It measures what the rider actually sees, including the display's own delay, which no software timestamp can capture.</dd>
+        <dt>Trade-off</dt><dd>It shows whether the display is too slow, not where the time goes, so diagnosing a failure will need extra work.</dd>
+      </dl>
+    </article>
+    <article class="record" id="d-extension">
+      <div class="record-head"><h3>Gear position and tyre pressure as the extension tests</h3><span class="status">Decided</span></div>
+      <dl>
+        <dt>Options considered</dt><dd>Fuel level; gear position; tyre pressure</dd>
+        <dt>Choice</dt><dd>Gear position as a value the bike already has, tyre pressure as one it does not</dd>
+        <dt>Why</dt><dd>Gear forces a custom vendor value, because the platform's gear value cannot express third of six. The R3 does not measure tyre pressure at all, and valve-mounted sensors transmit wirelessly, so nothing is wired into the motorcycle.</dd>
+        <dt>Trade-off</dt><dd>Fuel level would have been easier. Tyre sensors add a wireless link that also has to be proven reliable.</dd>
+      </dl>
+    </article>
+    <article class="record" id="d-ridelog">
+      <div class="record-head"><h3>Log every frame on the bus</h3><span class="status">Decided</span></div>
+      <dl>
+        <dt>Options considered</dt><dd>Log only decoded values; log every frame the bus carries</dd>
+        <dt>Choice</dt><dd>Every frame, timestamped, surviving a sudden power cut</dd>
+        <dt>Why</dt><dd>Raw capture is how the bus gets decoded in the first place, and it keeps every future question answerable from past rides.</dd>
+        <dt>Trade-off</dt><dd>Only decoded frames have meaning, and a log that must survive the key being turned off mid-write is harder to build.</dd>
+      </dl>
+    </article>
+    <article class="record" id="d-cost">
+      <div class="record-head"><h3>Track cost rather than gate on it</h3><span class="status">Decided</span></div>
+      <dl>
+        <dt>Options considered</dt><dd>Cost as a pass-or-fail criterion; cost as a tracked target</dd>
+        <dt>Choice</dt><dd>Tracked against a €500 target, not pass or fail</dd>
+        <dt>Why</dt><dd>A prototype's cost says little about production cost, and a hard gate would reward cutting corners on the things that matter.</dd>
+        <dt>Trade-off</dt><dd>No hard forcing function on spending.</dd>
+      </dl>
+    </article>
+    <article class="record" id="d-safetyphase">
+      <div class="record-head"><h3>A dedicated phase for the safety layer</h3><span class="status">Decided</span></div>
+      <dl>
+        <dt>Options considered</dt><dd>Widen an existing phase; add a new one</dd>
+        <dt>Choice</dt><dd>A new Phase 7, ahead of the added sensor</dd>
+        <dt>Why</dt><dd>The criteria table showed two must-pass criteria with no phase able to test them. Must-pass work outranks nice-to-have work, so it goes before the tyre sensor.</dd>
+        <dt>Trade-off</dt><dd>The timeline grows by a phase.</dd>
+      </dl>
+    </article>
+</section>
+
+<section class="day-group">
   <h2>Day 2, 18 September 2026</h2>
   <p class="muted">From the session <a href="day-02.html">My own app, reading the vehicle</a>.</p>
     <article class="record" id="d-poc">
@@ -158,7 +235,7 @@
 </section>
 
 <footer>
-  <p>Last updated 17 September 2026.</p>
+  <p>Last updated 19 September 2026.</p>
 </footer>
 </div>
 </body>

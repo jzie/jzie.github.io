@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Acceptance criteria | Android Automotive motorcycle cluster | Jijo Chacko</title>
+<meta name="description" content="Pass or fail criteria for a feasibility POC: can Android Automotive run a motorcycle instrument cluster? Every test result recorded, including regressions.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏍️</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="wrap">
+<nav class="site-nav" aria-label="Site">
+  <a class="brand" href="index.html">Jijo Chacko</a>
+  <div class="nav-links">
+    <a href="project.html" aria-current="page">Project</a>
+    <a href="fieldnotes.html">Field Notes</a>
+    <a href="decisions.html">Decisions</a>
+    <a href="project.html#sessions">Sessions</a>
+    <a href="index.html#contact">Contact</a>
+  </div>
+</nav>
+
+<header>
+  <p class="byline">Android Automotive motorcycle cluster</p>
+  <h1>Acceptance criteria</h1>
+  <p class="lede">What the prototype has to do for the answer to be yes. Every criterion has a threshold set before testing began, and every test result is kept, including the ones that later failed again.</p>
+  <dl class="facts three">
+    <div><dt>Must-pass criteria</dt><dd>0 of 4 passing</dd></div>
+    <div><dt>All pass or fail criteria</dt><dd>0 of 13 passing</dd></div>
+    <div><dt>Prototype cost</dt><dd>€0 of €500</dd></div>
+  </dl>
+</header>
+
+<section class="prose">
+  <h2>How to read the table</h2>
+  <p>Each small square in the history column is one test run, oldest on the left: green passed, red failed. <strong>First passed</strong> is when a criterion first met its threshold. <strong>Passing since</strong> is when its current unbroken run of passes began. If those two dates differ, something broke along the way and was fixed. A criterion that passed and then failed shows as <strong>Regressed</strong>.</p>
+  <div class="example">
+    <p class="small muted" style="margin:0 0 10px">Example, not real data: passed on Day 12, broke on Day 14 after a change, fixed on Day 15.</p>
+    <div class="row">
+      <div class="runs"><span class="run pass"></span><span class="run pass"></span><span class="run fail"></span><span class="run pass"></span><span class="run pass"></span></div>
+      <span class="st-badge st-pass">Pass</span>
+      <span class="small">First passed: Day 12</span>
+      <span class="small">Passing since: Day 15</span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Criteria</h2>
+  <p class="prose muted">Must-pass criteria decide the verdict: if any of them fails, the answer is no, whatever else passes. Thresholds were agreed on <a href="day-03.html">Day 3</a>.</p>
+  <div class="tw crit" style="margin-top:18px">
+    <table>
+      <thead><tr><th>#</th><th>Criterion and threshold</th><th>Testable from</th><th>Status</th><th>First passed</th><th>Passing since</th><th>History</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="num">1</td>
+          <td><span class="name">Warning lights at key-turn</span><span class="must">Must pass</span><span class="passif">Visible within 1 second of key-on, and no slower than the stock R3.</span></td>
+          <td class="date">Phase 7</td>
+          <td><span class="st-badge st-untested">Not tested</span></td>
+          <td class="date">—</td>
+          <td class="date">—</td>
+          <td><div class="runs"><span class="none">No runs yet</span></div></td>
+        </tr>
+        <tr>
+          <td class="num">2</td>
+          <td><span class="name">Android cluster usable after key-turn</span><span class="must">Must pass</span><span class="passif">Live speed and RPM on screen within 10 seconds of key-on.</span></td>
+          <td class="date">Phase 6</td>
+          <td><span class="st-badge st-untested">Not tested</span></td>
+          <td class="date">—</td>
+          <td class="date">—</td>
+          <td><div class="runs"><span class="none">No runs yet</span></div></td>
+        </tr>
+        <tr>
+          <td class="num">3</td>
+          <td><span class="name">Data freshness</span><span class="passif">19 of 20 neutral-to-first shifts appear within 200 ms of the stock cluster, measured by slow-motion video.</span></td>
+          <td class="date">Phase 6</td>
+          <td><span class="st-badge st-untested">Not tested</span></td>
+          <td class="date">—</td>
+          <td class="date">—</td>
+          <td><div class="runs"><span class="none">No runs yet</span></div></td>
+        </tr>
+        <tr>
+          <td class="num">4</td>
+          <td><span class="name">Stale data blanks itself</span><span class="passif">Display blanks within 1 second of data stopping.</span></td>
+          <td class="date">Phase 6</td>
+          <td><span class="st-badge st-untested">Not tested</span></td>
+          <td class="date">—</td>
+          <td class="date">—</td>
+          <td><div class="runs"><span class="none">No runs yet</span></div></td>
+        </tr>
+        <tr>
+          <td class="num">5</td>
+          <td><span class="name">Safety split survives an Android crash</span><span class="must">Must pass</span><span class="passif">Warning lights unaffected across 10 forced Android crashes.</span></td>
+          <td class="date">Phase 7</td>
+          <td><span class="st-badge st-untested">Not tested</span></td>
+          <td class="date">—</td>
+          <td class="date">—</td>
+          <td><div class="runs"><span class="none">No runs yet</span></div></td>
+        </tr>
+        <tr>
+          <td class="num">6</td>
+          <td><span class="name">Readable at a glance, in sunlight</span><span class="passif">Speed and gear read correctly in under 1.5 seconds, 9 times in 10, outdoors at midday.</span></td>
+          <td class="date">Phase 9</td>
+          <td><span class="st-badge st-untested">Not tested</span></td>
+          <td class="date">—</td>
+          <td class="date">—</td>
+          <td><div class="runs"><span class="none">No runs yet</span></div></td>
+        </tr>
+        <tr>
+          <td class="num">7</td>
+          <td><span class="name">Nothing to touch while moving</span><span class="passif">No interaction exists while the motorcycle is moving.</span></td>
+          <td class="date">Phase 9</td>
+          <td><span class="st-badge st-untested">Not tested</span></td>
+          <td class="date">—</td>
+          <td class="date">—</td>
+          <td><div class="runs"><span class="none">No runs yet</span></div></td>
+        </tr>
+        <tr>
+          <td class="num">8</td>
+          <td><span class="name">Read-only on the bike</span><span class="must">Must pass</span><span class="passif">Zero frames sent, confirmed by a second sniffer over a full ride.</span></td>
+          <td class="date">Phase 4</td>
+          <td><span class="st-badge st-untested">Not tested</span></td>
+          <td class="date">—</td>
+          <td class="date">—</td>
+          <td><div class="runs"><span class="none">No runs yet</span></div></td>
+        </tr>
+        <tr>
+          <td class="num">9</td>
+          <td><span class="name">Key-off battery drain</span><span class="passif">Our hardware adds at most 1 mA with the key off.</span></td>
+          <td class="date">Phase 10</td>
+          <td><span class="st-badge st-untested">Not tested</span></td>
+          <td class="date">—</td>
+          <td class="date">—</td>
+          <td><div class="runs"><span class="none">No runs yet</span></div></td>
+        </tr>
+        <tr>
+          <td class="num">10a</td>
+          <td><span class="name">Adding one of the bike's own values: gear position</span><span class="passif">Neutral and 1 to 6 correct on every shift in a 20-minute ride, changing only the bridge and one custom value.</span></td>
+          <td class="date">Phase 6</td>
+          <td><span class="st-badge st-untested">Not tested</span></td>
+          <td class="date">—</td>
+          <td class="date">—</td>
+          <td><div class="runs"><span class="none">No runs yet</span></div></td>
+        </tr>
+        <tr>
+          <td class="num">10b</td>
+          <td><span class="name">Adding a value the bike doesn't have: tyre pressure</span><span class="passif">Front and rear within 0.1 bar of a gauge, blanking when a sensor goes quiet.</span></td>
+          <td class="date">Phase 8</td>
+          <td><span class="st-badge st-untested">Not tested</span></td>
+          <td class="date">—</td>
+          <td class="date">—</td>
+          <td><div class="runs"><span class="none">No runs yet</span></div></td>
+        </tr>
+        <tr>
+          <td class="num">11</td>
+          <td><span class="name">Same path on a bike with no data bus</span><span class="passif">On the 1985 XS 650, the same app and custom values run unchanged; only the bridge differs.</span></td>
+          <td class="date">After Phase 10</td>
+          <td><span class="st-badge st-untested">Not tested</span></td>
+          <td class="date">—</td>
+          <td class="date">—</td>
+          <td><div class="runs"><span class="none">No runs yet</span></div></td>
+        </tr>
+        <tr>
+          <td class="num">13</td>
+          <td><span class="name">Complete ride log</span><span class="passif">No missing frames across a full ride, and 10 of 10 sudden power cuts leave a readable log.</span></td>
+          <td class="date">Phase 6</td>
+          <td><span class="st-badge st-untested">Not tested</span></td>
+          <td class="date">—</td>
+          <td class="date">—</td>
+          <td><div class="runs"><span class="none">No runs yet</span></div></td>
+        </tr>
+        <tr>
+          <td class="num">12</td>
+          <td><span class="name">Cost of the prototype</span><span class="passif">Target under €500. Tracked, not pass or fail.</span></td>
+          <td class="date">Throughout</td>
+          <td><span class="st-badge st-tracked">€0 of €500</span></td>
+          <td class="date">—</td><td class="date">—</td>
+          <td><span class="none muted">Tracked, not tested</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="prose">
+  <h2>A gap this table exposed</h2>
+  <p>When the criteria were first laid out, 1 and 5 had no phase that could test them: both depend on a safety layer that owns the regulated warning lights, and nothing in the plan built one. Two must-pass criteria with no route to a result is a plan that cannot answer its own question, so Phase 7 was added on <a href="day-03.html">Day 3</a> to build it.</p>
+</section>
+
+<footer>
+  <p>Last updated 19 September 2026.</p>
+</footer>
+</div>
+</body>
+</html>

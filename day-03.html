@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Day 3: Deciding what counts as a yes | Jijo Chacko</title>
+<meta name="description" content="Session notes, day 3: turning the feasibility question into thirteen pass-or-fail acceptance criteria, and adding a safety-layer phase the plan was missing.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏍️</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="wrap">
+<nav class="site-nav" aria-label="Site">
+  <a class="brand" href="index.html">Jijo Chacko</a>
+  <div class="nav-links">
+    <a href="project.html">Project</a>
+    <a href="fieldnotes.html">Field Notes</a>
+    <a href="decisions.html">Decisions</a>
+    <a href="project.html#sessions" aria-current="page">Sessions</a>
+    <a href="index.html#contact">Contact</a>
+  </div>
+</nav>
+
+<header>
+  <p class="byline">Day 3, 19 September 2026</p>
+  <h1>Deciding what counts as a yes</h1>
+  <p class="lede">Goal for the session: turn the POC question into criteria that can pass or fail, before any testing begins, so the answer cannot drift to match whatever the prototype happens to do.</p>
+  <dl class="facts three">
+    <div><dt>Phase</dt><dd>3 of 10: criteria, then custom vehicle values</dd></div>
+    <div><dt>Kind of session</dt><dd>Product work, no code</dd></div>
+    <div class="live"><dt>Outcome</dt><dd>13 criteria, 4 must-pass, and a new phase</dd></div>
+  </dl>
+</header>
+
+<section>
+  <h2>What I did, and why</h2>
+  <ol class="steps">
+    <li><span><span class="what">Drafted twelve candidate criteria and chose what to keep.</span><span class="why">Why: A POC without pass-or-fail criteria cannot produce an answer, only an impression. I kept nine as proposed, split the extension test in two, added a complete ride log, and kept cost and the older motorcycle as later measures.</span></span></li>
+    <li><span><span class="what">Picked the must-pass criteria: warning lights at key-turn, a usable cluster after key-turn, the safety split surviving an Android crash, and read-only on the bike.</span><span class="why">Why: Must-pass criteria separate a no from a not yet. If one of these fails, the answer is no whatever else passes.</span></span></li>
+    <li><span><span class="what">Set a threshold for every criterion, with the stock R3 as the baseline for timing.</span><span class="why">Why: Numbers set before testing cannot be bent to fit the results, and at least as good as the original is a bar nobody can argue with.</span></span></li>
+    <li><span><span class="what">Defined how freshness is measured: slow-motion video of the stock cluster and my display side by side, 19 of 20 neutral-to-first shifts within 200 ms.</span><span class="why">Why: A threshold you cannot measure is a wish. Video measures what the rider sees, including the display's own delay.</span></span></li>
+    <li><span><span class="what">Built an acceptance criteria page that keeps every test result for every criterion.</span><span class="why">Why: A single status hides regressions. Showing when a criterion first passed, and whether it has passed ever since, makes a fix that later broke visible at a glance.</span></span></li>
+    <li><span><span class="what">Added Phase 7, a safety layer for the warning lights, independent of Android.</span><span class="why">Why: Laying the criteria against the roadmap showed two must-pass criteria with no phase able to test them. A plan that cannot answer its own question needs changing, not the criteria.</span></span></li>
+  </ol>
+
+</section>
+
+<section>
+  <h2>Evidence</h2>
+  <div class="evidence">
+    <div>
+      <h3>The must-pass criteria</h3>
+      <div class="tw">
+        <table>
+          <thead><tr><th>#</th><th>Pass if</th></tr></thead>
+          <tbody>
+            <tr><td><code>1</code></td><td>Warning lights visible within 1 second of key-on, no slower than the stock R3</td></tr>
+            <tr><td><code>2</code></td><td>Live speed and RPM within 10 seconds of key-on</td></tr>
+            <tr><td><code>5</code></td><td>Warning lights unaffected across 10 forced Android crashes</td></tr>
+            <tr><td><code>8</code></td><td>Zero frames sent to the bike, confirmed by a second sniffer</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="small muted" style="margin-top:12px">All thirteen, with their history, are on the <a href="criteria.html">acceptance criteria page</a>.</p>
+    </div>
+    <div>
+      <h3>Two criteria in tension</h3>
+      <p>A 10-second start-up almost certainly means keeping Android asleep rather than fully off. But the R3's 7 Ah battery would lose half its charge in about a month at 5 mA in total, which is why our hardware may add at most 1 mA.</p>
+      <p class="small muted">A car can afford that standby. This motorcycle probably cannot, and the POC will show which criterion gives.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>What I learned</h2>
+  <div class="learn">
+    <div><h3>Criteria change the plan</h3><p>Writing the criteria exposed a phase the plan had never included. The criteria were right and the plan was incomplete, which is exactly what criteria are for.</p></div>
+    <div><h3>The method defines the number</h3><p>200 ms measured by software timestamps and 200 ms measured on video are different claims. Choosing the method is part of choosing the threshold.</p></div>
+    <div><h3>Baselines beat absolute targets</h3><p>No slower than the original cluster is easier to defend than any number picked in isolation, and the original is sitting in my garage.</p></div>
+    <div><h3>The small battery is a real constraint</h3><p>Fast start-up and low standby drain pull against each other much harder on a motorcycle than in a car. It may be the sharpest difference found so far.</p></div>
+  </div>
+</section>
+
+<section class="prose">
+  <h2>Decisions made today</h2>
+  <ul class="dlist">
+    <li><a href="decisions.html#d-criteria">Pass-or-fail criteria, with a must-pass subset</a></li>
+    <li><a href="decisions.html#d-thresholds">Thresholds set before any testing</a></li>
+    <li><a href="decisions.html#d-baseline">The stock R3 as the baseline</a></li>
+    <li><a href="decisions.html#d-freshness">Measure freshness by slow-motion video</a></li>
+    <li><a href="decisions.html#d-extension">Gear position and tyre pressure as the extension tests</a></li>
+    <li><a href="decisions.html#d-ridelog">Log every frame on the bus</a></li>
+    <li><a href="decisions.html#d-cost">Track cost rather than gate on it</a></li>
+    <li><a href="decisions.html#d-safetyphase">A dedicated phase for the safety layer</a></li>
+  </ul>
+</section>
+
+<section class="prose">
+  <h2>Next session</h2>
+  <p>Film the stock R3 from key-on as the baseline for criteria 1 and 2. Then continue Phase 3: defining my own motorcycle values, which needs a custom Android build rather than the stock emulator.</p>
+</section>
+
+<nav class="pager" aria-label="Sessions">
+  <a href="day-02.html">Previous session: Day 2</a>
+  <a href="project.html#sessions">All sessions</a>
+</nav>
+
+<footer>
+  <p>Last updated 19 September 2026.</p>
+</footer>
+</div>
+</body>
+</html>

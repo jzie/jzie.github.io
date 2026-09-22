@@ -53,6 +53,7 @@
         <tr><td>Android is not a safety-certified system</td><td>Android Automotive holds no automotive safety certification such as ISO 26262, and manufacturers isolate it from safety-critical functions, often running it alongside a real-time operating system. Google's own architecture splits the cluster: a high availability renderer draws the safety and regulatory elements, and the Android layer draws the rest.</td><td><span class="tag documented">Documented</span></td></tr>
         <tr><td>The data model is car-shaped</td><td>Gear arrives as park, reverse, neutral and drive. A motorcycle has neutral and six gears. Lean angle, chain condition and similar do not exist in the platform at all. <a href="day-02.html">Day 2</a></td><td><span class="tag confirmed">Confirmed</span></td></tr>
         <tr><td>The environment is harsher</td><td>Direct sunlight, rain, engine vibration and temperatures from freezing to baking, with no cabin around any of it. All of it affects readability, mounting and component life.</td><td><span class="tag assumed">Assumed</span></td></tr>
+        <tr><td>A small battery rules out car-style standby</td><td>Cars commonly keep Android asleep rather than fully off so it wakes quickly, backed by a battery many times larger. The R3 has a 7 Ah battery, which would lose half its charge in about a month at 5 mA in total. Fast start-up and low standby drain pull against each other far harder here. <a href="day-03.html">Day 3</a></td><td><span class="tag assumed">Assumed, calculated</span></td></tr>
         <tr><td>Every euro is fought over</td><td>A cluster is a far larger share of the bill of materials on a €6,000 motorcycle than on a €40,000 car, and there is less electrical power to spare.</td><td><span class="tag assumed">Assumed</span></td></tr>
       </tbody>
     </table>
@@ -68,6 +69,7 @@
         <tr><td>Treated the single display as the whole cluster</td><td>Rather than the platform cluster APIs, which assume a second screen, we run one full-screen app. Cheaper and simpler, and it costs us the platform's own cluster integration. <a href="decisions.html#d-onescreen">Decision</a></td><td><span class="tag confirmed">Confirmed</span></td></tr>
         <tr><td>Built a custom layout instead of Google's templates</td><td>The Car App Library gives driver-distraction checks for free but only allows lists, grids and navigation screens. A cluster is a few very large numbers, so we took the custom route and the responsibility that comes with it. <a href="decisions.html#d-template">Decision</a></td><td><span class="tag confirmed">Confirmed</span></td></tr>
         <tr><td>Converted units in the display layer</td><td>The platform stores speed in metres per second and the app decides what the rider sees. Keeping that split means a change of units never touches the data path. <a href="day-01.html">Day 1</a></td><td><span class="tag confirmed">Confirmed</span></td></tr>
+        <tr><td>Benchmarked against the vehicle's own cluster</td><td>Timing criteria are set relative to the stock R3 rather than as absolute numbers. For anyone repeating this, measuring the original cluster first is what makes the thresholds defensible. <a href="decisions.html#d-baseline">Decision</a></td><td><span class="tag documented">Decided, Day 3</span></td></tr>
         <tr><td>Subscribed to values rather than polling</td><td>Lower power, faster updates, and the current value arrives on subscribing, so the cluster is populated at power-on rather than blank. <a href="decisions.html#d-subscribe">Decision</a></td><td><span class="tag confirmed">Confirmed</span></td></tr>
       </tbody>
     </table>
@@ -96,7 +98,7 @@
     <table>
       <thead><tr><th>Workaround</th><th>What it does</th><th>Limitation it answers</th><th>Status</th></tr></thead>
       <tbody>
-        <tr><td>Split the cluster</td><td>A small, instant safety layer owns the regulated warning lights and Android owns everything else. This mirrors how the industry already handles it, and it is the heart of the feasibility question.</td><td>Answers the start-up and safety limitations</td><td><span class="tag planned">Planned</span></td></tr>
+        <tr><td>Split the cluster</td><td>A small, instant safety layer owns the regulated warning lights and Android owns everything else. This mirrors how the industry already handles it, and it is the heart of the feasibility question.</td><td>Answers the start-up and safety limitations</td><td><span class="tag planned">Phase 7</span></td></tr>
         <tr><td>Custom vendor values for motorcycle data</td><td>Define our own properties in the vendor range for gear, RPM and the rest, which requires a custom Android build rather than a stock image.</td><td>Answers the car-shaped data model</td><td><span class="tag planned">Phase 3</span></td></tr>
         <tr><td>Staleness timeout in the app</td><td>Blank a value when it is older than a set age, rather than showing a number that stopped being true.</td><td>Answers the frozen value problem</td><td><span class="tag planned">Planned</span></td></tr>
         <tr><td>Start by itself at power-on</td><td>Nobody taps an icon on a motorcycle, so the cluster app has to launch itself and stay up.</td><td>Answers the no-interaction constraint</td><td><span class="tag planned">Planned</span></td></tr>
@@ -112,10 +114,11 @@
       <thead><tr><th>Question</th><th>When I expect to answer it</th></tr></thead>
       <tbody>
         <tr><td>How long from power-on to a usable Android cluster on real hardware?</td><td>Phase 6, on the Raspberry Pi</td></tr>
-        <tr><td>Does the split cluster hold up, or does the safety layer draw so much that Android adds little?</td><td>Phase 7, once the design is real</td></tr>
+        <tr><td>Does the split cluster hold up, or does the safety layer draw so much that Android adds little?</td><td>Phase 7, when the safety layer is built</td></tr>
         <tr><td>Is the R3's diagnostic port usable in listen-only mode, or does it only answer when asked?</td><td>Phase 4, first capture session</td></tr>
-        <tr><td>What does this add to the bill of materials, and what does it draw?</td><td>Phase 8, with final hardware</td></tr>
-        <tr><td>Is an affordable display readable in direct sunlight?</td><td>Phase 7, display selection</td></tr>
+        <tr><td>Are turn signals and high beam on the bus, or wired straight to the dashboard?</td><td>Phase 4, first capture session</td></tr>
+        <tr><td>What does this add to the bill of materials, and what does it draw?</td><td>Phase 10, with final hardware</td></tr>
+        <tr><td>Is an affordable display readable in direct sunlight?</td><td>Phase 9, display selection</td></tr>
       </tbody>
     </table>
   </div>
@@ -123,11 +126,11 @@
 
 <section class="prose">
   <h2>6. Verdict</h2>
-  <p>Empty until the criteria are written and the prototype runs. I would rather publish a no, with the reasons, than quietly stop.</p>
+  <p>Measured against the <a href="criteria.html">acceptance criteria</a>, agreed on Day 3 before any testing. Empty until the prototype runs. I would rather publish a no, with the reasons, than quietly stop.</p>
 </section>
 
 <footer>
-  <p>Last updated 18 September 2026.</p>
+  <p>Last updated 19 September 2026.</p>
 </footer>
 </div>
 </body>
